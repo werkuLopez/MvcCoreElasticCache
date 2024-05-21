@@ -1,0 +1,18 @@
+﻿@model Coche
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="">
+            <img class="img-fluid" src="@Model.Imagen" alt="@Model.Marca" />
+            <p class="py-3">@Model.Marca</p>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a asp-controller="Coches" asp-action="Index">
+                Volver
+            </a>
+            <a asp-controller="Coches" asp-action="Eliminar" asp-route-id="@Model.IdCoche">
+                Eliminar
+            </a>
+        </div>
+    </li>
+</ul>

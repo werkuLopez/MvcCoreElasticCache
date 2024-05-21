@@ -1,0 +1,23 @@
+﻿@model List<Coche>
+
+<div class="container-xl">
+    <ul class="list-group">
+        @foreach (Coche ch in Model)
+        {
+            <li class="list-group-item mb-3">
+                <div class="">
+                    <img class="img-fluid" src="@ch.Imagen" alt="@ch.Marca" width="130px" height="130px" />
+                    <p class="py-3">@ch.Marca</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a asp-controller="Coches" asp-action="Details" asp-route-id="@ch.IdCoche">
+                        Detalles
+                    </a>
+                    <a asp-controller="Coches" asp-action="Eliminar" asp-route-id="@ch.IdCoche">
+                        Eliminar
+                    </a>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
