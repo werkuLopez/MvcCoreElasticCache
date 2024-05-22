@@ -1,22 +1,25 @@
 ﻿@model List<Coche>
 
 <div class="container-xl">
-    <ul class="list-group">
-        @foreach (Coche ch in Model)
-        {
-            <li class="list-group-item">
-                <div class="d-flex flex-wrap">
-                    <img src="@ch.Imagen" width="130px" height="130px" alt="@ch.Modelo" />
-                    <h2 class="text-info">
-                        @ch.Modelo - @ch.Marca
-                    </h2>
-                </div>
-                <a asp-controller="Coches"
-                   asp-action="DeleteFavorito"
-                   asp-route-idcoche="@ch.IdCoche">
-                    eliminar favorito
-                </a>
-            </li>
-        }
-    </ul>
+    @if (Model != null)
+    {
+        <ul class="list-group">
+            @foreach (Coche ch in Model)
+            {
+                <li class="list-group-item">
+                    <div class="d-flex flex-wrap">
+                        <img src="@ch.Imagen" width="130px" height="130px" alt="@ch.Modelo" />
+                        <h2 class="text-info">
+                            @ch.Modelo - @ch.Marca
+                        </h2>
+                    </div>
+                    <a asp-controller="Coches"
+                       asp-action="DeleteFavorito"
+                       asp-route-idcoche="@ch.IdCoche">
+                        eliminar favorito
+                    </a>
+                </li>
+            }
+        </ul>
+    }
 </div>
