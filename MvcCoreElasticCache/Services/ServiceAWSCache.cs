@@ -1,23 +1,22 @@
-﻿using MvcCoreElasticCache.Helpers;
+﻿using Microsoft.Extensions.Caching.Distributed;
 using MvcCoreElasticCache.Models;
 using Newtonsoft.Json;
-using StackExchange.Redis;
 
 namespace MvcCoreElasticCache.Services
 {
     public class ServiceAWSCache
     {
-        private IDatabase cache;
+        private IDistributedCache cache;
 
-        public ServiceAWSCache()
+        public ServiceAWSCache(IDistributedCache cache)
         {
-            this.cache = HelperCacheRedis.Connection.GetDatabase();
+            this.cache = cache;
         }
 
         public async Task<List<Coche>> GetCochesFavoritosAsync()
         {
             // almacenaremos una colección de coches en formato json
-            string json = await this.cache.StringGetAsync("cochesfavoritos");
+            string json = await this.cache.GetStringAsync("cochesfavoritos");
             if (json == null)
             {
                 return null;
@@ -40,7 +39,14 @@ namespace MvcCoreElasticCache.Services
             coches.Add(coche);
 
             string json = JsonConvert.SerializeObject(coches);
-            await this.cache.StringSetAsync("cochesfavoritos", json, TimeSpan.FromMinutes(30));
+
+            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(30),
+            };
+
+
+            await this.cache.SetStringAsync("cochesfavoritos", json, options);
         }
 
         public async Task ELiminarCocheFavoritoAsync(int idcoche)
@@ -56,16 +62,20 @@ namespace MvcCoreElasticCache.Services
                 // si no hay coches en favoritos, eliminamos la clave
                 if (coches.Count == 0)
                 {
-                    await this.cache.KeyDeleteAsync("cochesfavoritos");
+                    await this.cache.RemoveAsync("cochesfavoritos");
                 }
                 else
                 {
                     // almacenamos los coches
                     string json = JsonConvert.SerializeObject(coches);
 
-                    //actualizamos la colección
+                    DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+                    {
+                        SlidingExpiration = TimeSpan.FromMinutes(30),
+                    };
 
-                    await this.cache.StringSetAsync("cochesfavoritos", json, TimeSpan.FromMinutes(30));
+                    //actualizamos la colección
+                    await this.cache.SetStringAsync("cochesfavoritos", json, options);
                 }
             }
         }

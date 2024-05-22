@@ -4,10 +4,19 @@ using MvcCoreElasticCache.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string conn = builder.Configuration.GetConnectionString("CacheRedisAWS");
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = conn;
+    options.InstanceName = "cache-coches";
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<ServiceAWSCache>();
 builder.Services.AddTransient<RepositoryCoches>();
+
 
 var app = builder.Build();
 
