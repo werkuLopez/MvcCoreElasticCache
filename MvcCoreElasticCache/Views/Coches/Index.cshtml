@@ -13,8 +13,10 @@
                     <a asp-controller="Coches" asp-action="Details" asp-route-id="@ch.IdCoche">
                         Detalles
                     </a>
-                    <a asp-controller="Coches" asp-action="Eliminar" asp-route-id="@ch.IdCoche">
-                        Eliminar
+                    <a asp-controller="Coches"
+                       asp-action="SeleccionFavorito"
+                       asp-route-idcoche="@ch.IdCoche">
+                        Añadir favorito
                     </a>
                 </div>
             </li>

@@ -1,9 +1,12 @@
+using MvcCoreElasticCache.Helpers;
 using MvcCoreElasticCache.Repositories;
+using MvcCoreElasticCache.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<ServiceAWSCache>();
 builder.Services.AddTransient<RepositoryCoches>();
 
 var app = builder.Build();
